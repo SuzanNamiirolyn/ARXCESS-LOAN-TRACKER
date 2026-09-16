@@ -14,7 +14,14 @@ export function SignUp() {
     if (form.password !== form.confirmPassword) return setError('Passwords do not match');
     if (form.password.length < 6) return setError('Password must be at least 6 characters');
     setLoading(true);
-    try { await signup(form.email, form.password); navigate('/calculator'); }
+    try {
+      const result = await signup(form.email, form.password);
+      if (result.needsEmailConfirmation) {
+        setError('Account created. Check your email to confirm your account, then sign in.');
+      } else {
+        navigate('/calculator');
+      }
+    }
     catch (err) { setError(err.message); }
     setLoading(false);
   };

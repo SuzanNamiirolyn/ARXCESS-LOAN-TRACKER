@@ -39,17 +39,21 @@ export function LoanCalculator() {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!results) return;
-    saveLoan({
-      principal: results.principal,
-      interestRate: results.annualRate,
-      termMonths: results.termMonths,
-      monthlyPayment: results.monthlyPayment,
-      totalInterest: results.totalInterest,
-      totalRepayment: results.totalRepayment
-    });
-    alert('✅ Loan saved to your history!');
+    try {
+      await saveLoan({
+        principal: results.principal,
+        interestRate: results.annualRate,
+        termMonths: results.termMonths,
+        monthlyPayment: results.monthlyPayment,
+        totalInterest: results.totalInterest,
+        totalRepayment: results.totalRepayment
+      });
+      alert('Loan saved to your history!');
+    } catch (saveError) {
+      setError(`Unable to save loan: ${saveError.message}`);
+    }
   };
 
   return (

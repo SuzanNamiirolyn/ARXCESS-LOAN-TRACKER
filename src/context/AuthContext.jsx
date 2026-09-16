@@ -1,40 +1,51 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => Boolean(supabase));
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('arxcess_loan_user');
-    if (savedUser) setUser(JSON.parse(savedUser));
-    setLoading(false);
+    if (!supabase) return undefined;
+
+    let mounted = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (mounted) {
+        setUser(data.session?.user ?? null);
+        setLoading(false);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signup = async (email, password) => {
-    const users = JSON.parse(localStorage.getItem('arxcess_loan_users') || '[]');
-    if (users.find(u => u.email === email)) throw new Error('Email already registered');
-    const newUser = { id: Date.now().toString(), email, createdAt: new Date().toISOString() };
-    users.push({ ...newUser, password });
-    localStorage.setItem('arxcess_loan_users', JSON.stringify(users));
-    localStorage.setItem('arxcess_loan_user', JSON.stringify(newUser));
-    setUser(newUser);
-    return newUser;
+    if (!supabase) throw new Error('Supabase is not configured. Add your environment variables.');
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) throw error;
+    setUser(data.session?.user ?? null);
+    return { user: data.user, needsEmailConfirmation: !data.session };
   };
 
   const login = async (email, password) => {
-    const users = JSON.parse(localStorage.getItem('arxcess_loan_users') || '[]');
-    const found = users.find(u => u.email === email && u.password === password);
-    if (!found) throw new Error('Invalid email or password');
-    const { password: _, ...safe } = found;
-    localStorage.setItem('arxcess_loan_user', JSON.stringify(safe));
-    setUser(safe);
-    return safe;
+    if (!supabase) throw new Error('Supabase is not configured. Add your environment variables.');
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    setUser(data.user);
+    return data.user;
   };
 
-  const logout = () => {
-    localStorage.removeItem('arxcess_loan_user');
+  const logout = async () => {
+    if (supabase) await supabase.auth.signOut();
     setUser(null);
   };
 

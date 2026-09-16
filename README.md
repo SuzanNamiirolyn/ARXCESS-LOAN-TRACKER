@@ -30,7 +30,7 @@
 | **Vite** | Fast build tool & dev server |
 | **Tailwind CSS** | Utility-first styling & responsive design |
 | **React Router** | Navigation & protected routes |
-| **LocalStorage API** | User data persistence |
+| **Supabase** | Authentication and cloud loan persistence |
 
 ---
 
@@ -74,6 +74,15 @@ cd arxcess-loan-tracker
 # Install dependencies
 npm install
 ```
+
+### Supabase Setup
+1. Create a project at [supabase.com](https://supabase.com).
+2. In the Supabase SQL Editor, run [`supabase/schema.sql`](supabase/schema.sql).
+3. Copy [`.env.example`](.env.example) to `.env`.
+4. Add your Supabase project URL and publishable key to `.env`.
+5. In Supabase Authentication settings, choose whether new accounts require email confirmation.
+
+Only the publishable key belongs in the frontend. Never expose a Supabase service-role key.
 
 ### Development
 ```bash
@@ -132,10 +141,10 @@ npm run preview
 
 ## 🔒 Data & Privacy
 
-- All user data is stored **locally in your browser** using `localStorage`
-- No external servers or cloud services are used
-- Passwords are stored locally alongside user data — **keep your device secure**
-- Clear browser data to remove all saved loans and accounts
+- Authentication is handled by **Supabase Auth**.
+- Loan records are stored in the Supabase `loans` table and protected by Row Level Security.
+- Each user can only read, create, and delete their own loans.
+- Existing `localStorage` records are not automatically migrated to Supabase.
 
 ---
 

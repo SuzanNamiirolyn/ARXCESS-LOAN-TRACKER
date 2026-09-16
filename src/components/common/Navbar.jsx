@@ -20,8 +20,8 @@ export function Navbar() {
       <div className="max-w-6xl px-4 mx-auto">
         <div className="flex items-center justify-between py-3">
           <Link to="/dashboard" className="flex items-center gap-2">
-            <span className="flex items-center justify-center w-8 h-8 text-sm font-bold text-white bg-[#2563eb] rounded-full">A</span>
-            <h1 className="hidden text-lg font-bold text-white sm:inline">Arxcess</h1>
+            <img src="/logo-color.svg" alt="Arxcess logo" className="w-8 h-8" />
+            <h1 className="hidden text-lg font-bold text-white sm:inline">Arxcess Loan Calculator</h1>
           </Link>
 
           <div className="items-center hidden gap-5 text-sm md:flex">
