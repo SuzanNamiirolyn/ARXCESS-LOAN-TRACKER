@@ -11,6 +11,7 @@ create table if not exists public.loans (
 );
 
 alter table public.loans add column if not exists interest_rate numeric not null default 0;
+alter table public.loans add column if not exists principal numeric not null default 0;
 alter table public.loans add column if not exists user_id uuid references auth.users(id) on delete cascade;
 alter table public.loans add column if not exists term_months integer not null default 0;
 alter table public.loans add column if not exists monthly_payment numeric not null default 0;
