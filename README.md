@@ -1,214 +1,163 @@
-# 📄 README.md — Arxcess Loan Tracker
-**Copy this into a file named `README.md` in your project root.**
+# Arxcess Loan Tracker
 
----
+A responsive loan calculator and tracking app built with React, Vite, Tailwind CSS, and Supabase. It helps users calculate repayment figures, save loan records, track borrowing history, and monitor totals across saved loans.
 
-# 🏦 Arxcess Loan Tracker
+## Features
 
-> **A professional, responsive loan calculation and management application** — built to simplify loan EMI calculations, track repayments, and monitor borrowing history with precision.
+- User authentication with Supabase
+- Protected routes for authenticated users only
+- Loan calculation with monthly payment, total interest, and total repayment values
+- Amortization schedule for each loan
+- Dashboard summary of saved loans
+- Loan history with delete capability
+- UGX-based currency formatting
+- ShadCN-style component foundation and consistent UI tokens
+- Production-ready build, lint, and test setup
 
----
+## Tech Stack
 
-## ✨ Features
+- React 19
+- Vite
+- Tailwind CSS
+- React Router
+- Supabase
+- Vitest
+- Docker
+- GitHub Actions CI
 
-- 🔐 **Secure Authentication** — User registration, login, and protected routes
-- 💰 **Loan Calculator** — Compute monthly payments, total interest, and full amortization schedule
-- 📊 **Dashboard** — Real-time overview: total loans, borrowed amount, interest, and average rates
-- 📋 **Loan History** — Save, view, and delete loan calculations with full details
-- 📱 **Fully Responsive** — Optimized for desktop, tablet, and mobile devices
-- 🎨 **Professional Branding** — Arxcess blue/black/gray design system
-- 💾 **Local Persistence** — Data stays saved across browser sessions
-- 🇺🇬 **UGX Currency Formatting** — Native Ugandan Shilling display
+## Project Structure
 
----
-
-## 🛠️ Tech Stack
-
-| Technology | Purpose |
-|---|---|
-| **React 18** | Frontend framework |
-| **Vite** | Fast build tool & dev server |
-| **Tailwind CSS** | Utility-first styling & responsive design |
-| **React Router** | Navigation & protected routes |
-| **Supabase** | Authentication and cloud loan persistence |
-
----
-
-## 📂 Project Structure
-
-```
-arxcess-loan-tracker/
+```bash
+TRACKER/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── public/
 ├── src/
 │   ├── components/
-│   │   ├── auth/              # Login & Sign Up pages
-│   │   ├── common/            # Navbar, ProtectedRoute
-│   │   ├── calculator/        # Loan Calculator engine
-│   │   ├── dashboard/         # Statistics & overview
-│   │   └── history/           # Saved loans management
-│   ├── context/               # Auth state management
-│   ├── hooks/                 # Custom React hooks
-│   ├── utils/                 # Calculation utilities
-│   ├── App.jsx                # Main app & routes
-│   ├── main.jsx               # Entry point
-│   └── index.css              # Global styles
+│   │   ├── auth/
+│   │   ├── calculator/
+│   │   ├── common/
+│   │   ├── dashboard/
+│   │   ├── history/
+│   │   └── ui/
+│   ├── context/
+│   ├── hooks/
+│   ├── lib/
+│   ├── utils/
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── supabase/
+│   └── schema.sql
+├── .env.example
+├── .gitignore
+├── components.json
+├── Dockerfile
+├── docker-compose.yml
+├── eslint.config.js
 ├── index.html
 ├── package.json
-├── tailwind.config.js         # Arxcess brand colors
-└── vite.config.js
+├── tailwind.config.js
+├── vite.config.js
+├── README.md
+└── package-lock.json
 ```
 
----
+## Prerequisites
 
-## 🚀 Quick Start
+- Node.js 18 or newer
+- npm
+- Supabase project
 
-### Prerequisites
-- Node.js 18+ installed
-- npm or yarn package manager
+## Installation
 
-### Installation
 ```bash
-# Clone or navigate to project
-cd arxcess-loan-tracker
-
-# Install dependencies
+cd "TRACKER"
 npm install
 ```
 
-### Supabase Setup
-1. Create a project at [supabase.com](https://supabase.com).
-2. In the Supabase SQL Editor, run [`supabase/schema.sql`](supabase/schema.sql).
-3. Copy [`.env.example`](.env.example) to `.env`.
-4. Add your Supabase project URL and publishable key to `.env`.
-5. In Supabase Authentication settings, choose whether new accounts require email confirmation.
+## Environment Setup
 
-Only the publishable key belongs in the frontend. Never expose a Supabase service-role key.
+Create a `.env` file from `.env.example` and add your Supabase values:
 
-### Development
 ```bash
-# Start local dev server
+VITE_SUPABASE_URL=your_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_anon_key
+```
+
+Then run the SQL schema in Supabase:
+
+```bash
+supabase/schema.sql
+```
+
+## Running the App
+
+```bash
 npm run dev
 ```
-> App runs at **http://localhost:5173**
 
-### Build for Production
+The app is typically available at:
+
 ```bash
-# Optimized build output → dist/ folder
-npm run build
-
-# Preview production build
-npm run preview
+http://localhost:5173
 ```
 
----
+## Production Build
 
-## 📖 Usage Guide
+```bash
+npm run build
+```
 
-### 1. Create Account
-- Navigate to **Sign Up**
-- Enter email and password (min. 6 characters)
-- Credentials stored securely in your browser
+## Lint and Test
 
-### 2. Calculate a Loan
-- Go to **Calculator**
-- Enter:
-  - **Principal Amount** — Total loan amount in UGX
-  - **Interest Rate (%)** — Annual percentage rate
-  - **Loan Term** — Duration in months or years
-- Click **Calculate** → view:
-  - Monthly payment
-  - Total interest payable
-  - Total repayment amount
-  - Full amortization schedule (month-by-month breakdown)
+```bash
+npm run lint
+npm test
+```
 
-### 3. Save & Track Loans
-- Click **Save Loan** to store calculation
-- View **Dashboard** for summary statistics across all loans
-- Open **Loan History** to review, compare, or delete saved entries
+## Docker
 
----
+Build locally:
 
-## 🎨 Brand Design System
+```bash
+docker build -t arxcess-loan-tracker .
+```
 
-| Element | Color Code | Usage |
-|---|---|---|
-| Primary Blue | `#2563eb` | Buttons, accents, links |
-| Deep Black | `#0f172a` | Headers, navbar, table headers |
-| Slate Gray | `#1e293b` | Secondary accents |
-| Light Gray | `#f8fafc` | Page backgrounds |
+Run with Docker Compose:
 
----
+```bash
+docker-compose up --build
+```
 
-## 🔒 Data & Privacy
+## Deployment
 
-- Authentication is handled by **Supabase Auth**.
-- Loan records are stored in the Supabase `loans` table and protected by Row Level Security.
-- Each user can only read, create, and delete their own loans.
-- Existing `localStorage` records are not automatically migrated to Supabase.
-
----
-
-## 🌐 Deployment
+This app is ready for Vercel deployment.
 
 ### Deploy to Vercel
-```bash
-# Push code to GitHub
-git init
-git add .
-git commit -m "Initial release"
-git push -u origin main
 
-# Import repository at vercel.com
-# → Auto-detects Vite → Deploy
+1. Push this project to GitHub.
+2. Import the repository in Vercel.
+3. Set these environment variables in the Vercel project settings:
+
+```bash
+VITE_SUPABASE_URL=your_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_anon_key
 ```
 
-### Deploy to Netlify
-```bash
-npm run build
-# Drag & drop the /dist folder to app.netlify.com
-```
+4. Deploy the project.
 
----
+The app includes a `vercel.json` rewrite config so client-side routes work correctly.
 
-## 🧪 Testing Checklist
+## CI/CD
 
-- [ ] User registration & login flow
-- [ ] Input validation & error messages
-- [ ] Loan calculation accuracy (EMI formula)
-- [ ] Amortization schedule correctness
-- [ ] Save/delete loan functionality
-- [ ] Dashboard statistics update
-- [ ] Responsive layout on mobile
-- [ ] Data persistence after refresh
-- [ ] Logout & route protection
+A GitHub Actions workflow is configured in `.github/workflows/ci.yml` to run lint, tests, and a production build on push and pull request.
 
----
+## License
 
-## 📌 Roadmap
+This project is for educational and portfolio use.
 
-- [ ] Cloud database integration
-- [ ] Password reset & email verification
-- [ ] Export schedule to PDF/Excel
-- [ ] Multiple loan comparison
-- [ ] Repayment progress tracking
-- [ ] Dark mode support
+## Notes
 
----
-
-## 🤝 Contributing
-
-This project is maintained by **Arxcess**. For inquiries or improvements, contact the development team.
-
----
-
-## © License
-
-Copyright © 2026 Arxcess. All rights reserved.
-
----
-
-### ✅ How to Use
-1. Create a new file named **`README.md`** in your project root folder
-2. Copy **all the text above** into it
-3. Save the file
-4. When you push your code to GitHub, this will automatically appear as your project's professional landing page!
+This project follows a modern frontend standard with reusable UI primitives, responsive design, and automated quality checks to better match production-level expectations.

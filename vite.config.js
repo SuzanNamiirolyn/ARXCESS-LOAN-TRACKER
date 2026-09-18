@@ -22,6 +22,12 @@ export default defineConfig({
     environment: 'node',
     globals: true,
     include: ['src/**/*.{test,spec}.{js,jsx}'],
+    pool: 'threads',
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+    },
   },
 
   resolve: {
