@@ -18,6 +18,12 @@ export default defineConfig({
     strictPort: true,
   },
 
+  test: {
+    environment: 'node',
+    globals: true,
+    include: ['src/**/*.{test,spec}.{js,jsx}'],
+  },
+
   resolve: {
     alias: {
       '@': '/src',
